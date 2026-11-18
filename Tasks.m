@@ -1,4 +1,4 @@
-%% Creating function and plotting
+%% Creating function and plotting it with the minimum point and the contour plot of the function
 clear all
 clc
 
@@ -51,7 +51,7 @@ legend('Location', 'northeast');
 axis tight;
 grid on;
 
-%% Implementing gradient descent, Newton's method, Gauss-Newton method and Nelder-Mead Simplex algorithm; using the same 3 random starting points for each method and comparing the results
+%% Implementing gradient descent, Newton's method and Gauss-Newton method; using the same 3 random starting points for each method and comparing the results
 
 for i = 1:3 % Implementing a for loop to run the optimization methods for 3 random starting points
 
@@ -271,6 +271,32 @@ for i = 1:3 % Implementing a for loop to run the optimization methods for 3 rand
     'gradient norm = %.3g, iterations = %d, converged = %d\n'], ...
     gnPoint(1), gnPoint(2), gnValue, gnGradientNorm, gnIteration, gnConverged);
 
-    % Plotting all four optimization paths on the 2D contour plot
-    
+    % Plotting all three optimization paths on the 2D contour plot
+    figure;
+    contour(X, Y, F, logspace(-3, 3.5, 35), ...
+        'LineColor', [0.4 0.4 0.4], 'LineWidth', 0.75);
+    hold on;
+    hGradientDescent = plot(gdPath(1, :), gdPath(2, :), '-o', ...
+        'Color', [0.85 0.2 0.2], 'MarkerFaceColor', [0.85 0.2 0.2], ...
+        'MarkerSize', 4, 'LineWidth', 1.2);
+    hNewton = plot(newtonPath(1, :), newtonPath(2, :), '-o', ...
+        'Color', [0.1 0.35 0.85], 'MarkerFaceColor', [0.1 0.35 0.85], ...
+        'MarkerSize', 4, 'LineWidth', 1.2);
+    hGaussNewton = plot(gnPath(1, :), gnPath(2, :), '-o', ...
+        'Color', [0.1 0.6 0.25], 'MarkerFaceColor', [0.1 0.6 0.25], ...
+        'MarkerSize', 4, 'LineWidth', 1.2);
+    hold off;
+    xlabel('x');
+    ylabel('y');
+    title(sprintf('Optimization Paths from Initial Point (%.4f, %.4f)', x0, y0));
+    legend([hGradientDescent, hNewton, hGaussNewton], ...
+        {sprintf('Gradient descent (%d iterations)', gdIteration), ...
+        sprintf('Newton method (%d iterations)', newtonIteration), ...
+        sprintf('Gauss-Newton method (%d iterations)', gnIteration)}, ...
+        'Location', 'best');
+    axis tight;
+    grid on;
+
 end % End of the for loop for 3 random starting points
+
+%% Implementing Nelder-Mead Simplex algorithm from 3 distinct random initialisations and comparing the results
