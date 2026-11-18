@@ -466,7 +466,13 @@ for nmInitialization = 1:3
             set(nmIterationCounter, 'String', ...
                 sprintf('Iteration %d / %d', nmFrame - 1, nmIteration));
             drawnow;
-            pause(0.2);
+            if nmFrame < numel(nmHistory)
+                if nmFrame - 1 < 5 || nmIteration <= 5
+                    pause(0.2);
+                else
+                    pause(8 / nmIteration);
+                end
+            end
         end
 
         if nmFinished
